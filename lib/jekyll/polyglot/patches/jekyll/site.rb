@@ -221,20 +221,20 @@ module Jekyll
     # avoids matching excluded files.  prepare makes sure
     # that all @exclude dirs have a trailing slash.
     def relative_url_regex(disabled = false)
-  regex = ''
-  unless disabled
-    @exclude.each do |x|
-      escaped_x = Regexp.escape(x)
-      regex += "(?!#{escaped_x})"
+      regex = ''
+      unless disabled
+        @exclude.each do |x|
+          escaped_x = Regexp.escape(x)
+          regex += "(?!#{escaped_x})"
+        end
+        @languages.each do |x|
+          escaped_x = Regexp.escape(x)
+          regex += "(?!#{escaped_x}\/)"
+        end
+      end
+      start = disabled ? 'ferh' : 'href'
+      %r{#{start}="?#{@baseurl}/((?:#{regex}[^,'"\s/?.]+\.?)*(?:/[^\]\[)("'\s]*)?)"}
     end
-    @languages.each do |x|
-      escaped_x = Regexp.escape(x)
-      regex += "(?!#{escaped_x}\/)"
-    end
-  end
-  start = disabled ? 'ferh' : 'href'
-  %r{#{start}="?#{@baseurl}/((?:#{regex}[^,'"\s/?.]+\.?)*(?:/[^\]\[)("'\s]*)?)"}
-end
 
     # a regex that matches absolute urls in a html document
     # matches href="http://baseurl/foo/bar-baz" and others like it
